@@ -8,6 +8,7 @@ import { api, type RouterOutputs } from "~/utils/api";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import Image from "next/image";
+import { LoadingPage } from "~/components/loading";
 
 dayjs.extend(relativeTime);
 
@@ -60,11 +61,14 @@ const PostView = (props: PostWithUser) => {
 };
 
 const Home: NextPage = () => {
-  const { data, isLoading } = api.posts.getAll.useQuery();
+  const { data, isLoading: postsLoaded } = api.posts.getAll.useQuery();
 
-  const user = useUser();
+  const {user, isLoaded: userLoaded} = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
+  // Return empty div if user or posts are not loaded since user thends to be loaded first
+  if(!userLoaded && !postsLoaded) return <div/>
+
+  if (isLoading) return <LoadingPage/>;
   if (!data) return <div>Something went wrong</div>;
 
   return (
