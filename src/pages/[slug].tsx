@@ -22,9 +22,9 @@ const ProfilePage: NextPage<{ username: string }> = ({ username }) => {
       <Head>
         <title>{data.username}</title>
       </Head>
-      <main className="flex h-screen justify-center">
+      <Layout>
         <div>{data.username}</div>
-      </main>
+      </Layout>
     </>
   );
 };
@@ -33,6 +33,7 @@ import { createProxySSGHelpers } from '@trpc/react-query/ssg';
 import { appRouter } from "~/server/api/root";
 import { prisma } from "~/server/db";
 import superjson from "superjson";
+import Layout from "~/components/Layout";
 
 export const getStaticProps: GetStaticProps = async (context) => {
 
